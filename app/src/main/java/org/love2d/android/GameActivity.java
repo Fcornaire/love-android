@@ -62,6 +62,8 @@ public class GameActivity extends SDLActivity {
 
     private static native void nativeSetDefaultStreamValues(int sampleRate, int framesPerBurst);
 
+    private static native void initHookWithLuaPath(String luaFullPath);
+
     @Override
     protected String getMainSharedObject() {
         String[] libs = getLibraries();
@@ -92,7 +94,15 @@ public class GameActivity extends SDLActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.loadLibrary("libwinmm");
+        System.loadLibrary("preload");
+
+        String nativeLibDir = getApplicationInfo().nativeLibraryDir;
+        String luaSoName = "libluajit.so";
+        String fullLuaPath = nativeLibDir + "/" + luaSoName;
+        initHookWithLuaPath(fullLuaPath);
+
+        System.loadLibrary("winmm");
+
         Log.d(TAG, "started");
         isFused = hasEmbeddedGame();
         args = new String[0];
