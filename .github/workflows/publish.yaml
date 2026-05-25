@@ -39,11 +39,16 @@ jobs:
           distribution: adopt-hotspot
           java-version: 17
           cache: gradle
-      - name: Build Embed APKs
-        run: bash ./gradlew assembleEmbedRecordRelease assembleEmbedNoRecordRelease
-      - name: Build Embed AABs
-        run: bash ./gradlew bundleEmbedRecordRelease bundleEmbedNoRecordRelease
+      - name: Build Normal APK
+        run: bash ./gradlew assembleNormalRecordRelease
+      - name: Build Embed APKs and AABs
+        run: bash ./gradlew assembleEmbedRecordRelease assembleEmbedNoRecordRelease bundleEmbedRecordRelease bundleEmbedNoRecordRelease
 
+      - name: Artifact (Normal unsigned APK)
+        uses: actions/upload-artifact@v4
+        with:
+          name: love-android.apk
+          path: app/build/outputs/apk/normalRecord/release/app-normal-record-release-unsigned.apk
       - name: Artifact (Embed APK)
         uses: actions/upload-artifact@v4
         with:
@@ -78,6 +83,7 @@ jobs:
           draft: false
           prerelease: ${{ github.event.inputs.prerelease }}
           files: |
+            app/build/outputs/apk/normalRecord/release/app-normal-record-release-unsigned.apk
             app/build/outputs/apk/embedRecord/release/app-embed-record-release-unsigned.apk
             app/build/outputs/apk/embedNoRecord/release/app-embed-noRecord-release-unsigned.apk
             app/build/outputs/bundle/embedRecordRelease/app-embed-record-release.aab
