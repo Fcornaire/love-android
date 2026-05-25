@@ -39,30 +39,30 @@ jobs:
           distribution: adopt-hotspot
           java-version: 17
           cache: gradle
-      - name: Build Normal Flavor
-        run: bash ./gradlew assembleNormalRecordRelease
-      - name: Build Release-specific Binaries
-        run: bash ./gradlew bundleNormalNoRecordRelease bundleEmbedRecordRelease bundleEmbedNoRecordRelease
+      - name: Build Embed APKs
+        run: bash ./gradlew assembleEmbedRecordRelease assembleEmbedNoRecordRelease
+      - name: Build Embed AABs
+        run: bash ./gradlew bundleEmbedRecordRelease bundleEmbedNoRecordRelease
 
-      - name: Artifact (Normal unsigned APK)
+      - name: Artifact (Embed APK)
         uses: actions/upload-artifact@v4
         with:
-          name: love-android.apk
-          path: app/build/outputs/apk/normalRecord/release/app-normal-record-release-unsigned.apk
-      - name: Artifact (Normal AAB w/o recording)
+          name: love-android-embed.apk
+          path: app/build/outputs/apk/embedRecord/release/app-embed-record-release-unsigned.apk
+      - name: Artifact (Embed APK w/o recording)
         uses: actions/upload-artifact@v4
         with:
-          name: love-android-ps.aab
-          path: app/build/outputs/bundle/normalNoRecordRelease/app-normal-noRecord-release.aab
+          name: love-android-embed-norecording.apk
+          path: app/build/outputs/apk/embedNoRecord/release/app-embed-noRecord-release-unsigned.apk
       - name: Artifact (Embed AAB)
         uses: actions/upload-artifact@v4
         with:
-          name: love-android-embed-record.aab
+          name: love-android-embed.aab
           path: app/build/outputs/bundle/embedRecordRelease/app-embed-record-release.aab
       - name: Artifact (Embed AAB w/o recording)
         uses: actions/upload-artifact@v4
         with:
-          name: love-android-embed.aab
+          name: love-android-embed-norecording.aab
           path: app/build/outputs/bundle/embedNoRecordRelease/app-embed-noRecord-release.aab
       - name: Artifact (Debug symbols)
         uses: actions/upload-artifact@v4
@@ -78,7 +78,7 @@ jobs:
           draft: false
           prerelease: ${{ github.event.inputs.prerelease }}
           files: |
-            app/build/outputs/apk/normalRecord/release/app-normal-record-release-unsigned.apk
-            app/build/outputs/bundle/normalNoRecordRelease/app-normal-noRecord-release.aab
+            app/build/outputs/apk/embedRecord/release/app-embed-record-release-unsigned.apk
+            app/build/outputs/apk/embedNoRecord/release/app-embed-noRecord-release-unsigned.apk
             app/build/outputs/bundle/embedRecordRelease/app-embed-record-release.aab
             app/build/outputs/bundle/embedNoRecordRelease/app-embed-noRecord-release.aab
