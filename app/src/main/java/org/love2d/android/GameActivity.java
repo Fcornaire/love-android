@@ -92,7 +92,7 @@ public class GameActivity extends SDLActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.loadLibrary("libwinmm");
+        System.loadLibrary("winmm");
         Log.d(TAG, "started");
         isFused = hasEmbeddedGame();
         args = new String[0];
